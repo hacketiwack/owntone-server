@@ -1442,6 +1442,7 @@ httpd_basic_auth(struct httpd_request *hreq, const char *user, const char *passw
       goto need_auth;
     }
 
+  DPRINTF(E_LOG, L_HTTPD, "Authentication user: '%s'", authuser);
   authpwd = strchr(authuser, ':');
   if (!authpwd)
     {
