@@ -1415,7 +1415,7 @@ httpd_basic_auth(struct httpd_request *hreq, const char *user, const char *passw
   char *authpwd;
   int ret;
 
-  DPRINTF(E_LOG, L_RSP, "Attempt with credentials: user '%s' and password '%s'\n", user, passwd);
+  DPRINTF(E_LOG, L_HTTPD, "Attempt with credentials: user '%s' and password '%s'\n", user, passwd);
 
   auth = httpd_header_find(hreq->in_headers, "Authorization");
   if (!auth)
@@ -1467,6 +1467,7 @@ httpd_basic_auth(struct httpd_request *hreq, const char *user, const char *passw
 
   if (strcmp(passwd, authpwd) != 0)
     {
+      DPRINTF(E_LOG, L_HTTPD, "Authentication password: '%s' / Password '%s'\n", authpwd, passwd);
       DPRINTF(E_LOG, L_HTTPD, "Bad password\n");
 
       free(authuser);
