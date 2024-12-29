@@ -234,7 +234,7 @@ enum sql_append_type {
 
 static void sql_from_ast(struct smartpl_result *, struct result_part *, struct ast *);
 
-// Escapes any '%', '_', or '"' that might be in the string
+// Escapes any '%' or '_' that might be in the string
 static void sql_like_escape(char **value, char *escape_char)
 {
   char *s = *value;
@@ -245,12 +245,12 @@ static void sql_like_escape(char **value, char *escape_char)
   *escape_char = 0;
 
   // Fast path, nothing to escape
-  if (!strpbrk(s, "_%\""))
+  if (!strpbrk(s, "_%"))
     return;
 
   // Calculate the required length dynamically
   for (size_t i = 0; i < len; i++) {
-    if (s[i] == '%' || s[i] == '_' || s[i] == '"') {
+    if (s[i] == '%' || s[i] == '_') {
       extra_len++; // Each escape adds an extra character
     }
   }
@@ -258,7 +258,6 @@ static void sql_like_escape(char **value, char *escape_char)
   new = realloc(s, len + extra_len);
   safe_snreplace(new, len, "%", "\\%");
   safe_snreplace(new, len, "_", "\\_");
-  safe_snreplace(new, len, "\"", "\\\""); // Escapes the double quote
   *escape_char = '\\';
   *value = new;
   printf("Escaped value: '%s'\n", *value);
