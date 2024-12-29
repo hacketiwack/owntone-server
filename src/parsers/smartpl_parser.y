@@ -261,6 +261,7 @@ static void sql_like_escape(char **value, char *escape_char)
   safe_snreplace(new, len, "\"", "\\\""); // Escapes the double quote
   *escape_char = '\\';
   *value = new;
+  printf("Escaped value: '%s'\n", *value);
 }
 
 static void sql_str_escape(char **value)
