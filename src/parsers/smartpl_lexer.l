@@ -51,7 +51,7 @@
 %option case-insensitive
 
 /* quoted \"(\\(.|\n)|[^\\"\n])*\" */
-quoted \"[^\"\n]*[\"\n]
+quoted "(?:[^"\\\n]|\\.)*"
 yyyymmdd  [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
 
 %%
