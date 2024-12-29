@@ -239,6 +239,7 @@ static void sql_like_escape(char **value, char *escape_char)
 {
   char *s = *value;
   size_t len = strlen(s);
+  size_t extra_len = 0;
   char *new;
 
   *escape_char = 0;
@@ -247,8 +248,14 @@ static void sql_like_escape(char **value, char *escape_char)
   if (!strpbrk(s, "_%\""))
     return;
 
-  len = 2 * len; // Enough for every char to be escaped
-  new = realloc(s, len);
+  // Calculate the required length dynamically
+  for (size_t i = 0; i < len; i++) {
+    if (s[i] == '%' || s[i] == '_' || s[i] == '"') {
+      extra_len++; // Each escape adds an extra character
+    }
+  }
+
+  new = realloc(s, len + extra_len);
   safe_snreplace(new, len, "%", "\\%");
   safe_snreplace(new, len, "_", "\\_");
   safe_snreplace(new, len, "\"", "\\\""); // Escapes the double quote
